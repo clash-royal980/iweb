@@ -53,6 +53,7 @@
 			outline: none;
 			padding-left: .6em;/*css中约定：0.8简写.8*/
 			padding-right: .6em;
+			/* vertical-align: middle;*//*行内块元素与同一行元素居中对齐*/ 
 		}
 		.search> .fa-search{
 			background: #57bc4c;
@@ -62,6 +63,46 @@
 			height: 32px;
 			line-height: 32px;/*文字竖着方向居中*/
 			text-align: center;
+		}
+		.cart-container{
+			/*修改购物车容器的定位方式，为下拉菜单提供定位参照物。但不脱离文档流*/
+			position: relative;
+			float: right;
+			margin-top: 6px;
+			margin-left: 20px;
+		}
+		.cart{
+			background: #f9f9f9;
+			border:1px solid #ddd;
+			line-height: 31px;
+			/* 修改光标样式 */
+			cursor: pointer;
+			border-bottom: none;
+			position: relative;/*只有定位了的元素才能使用z-index*/
+			z-index: 1;
+		}
+		.cart> .fa{
+		     padding-left: 0.6em;
+			padding-right: 0.6em;
+			color: #57bc4c;
+		}
+		.cart> .caret{		
+			transform: rotate(0);
+			transition: all .5s;/*渐变动画*/
+		}
+		.cart> .caret-rotate{
+			transform: rotate(180deg);
+		}
+		.cart-container> .dropdown{
+			position: absolute;/*绝对定位的元素可以处于其他元素上方*/
+		    top: 31px;
+			right: 0px;
+			border: 1px solid #ddd;
+			/* padding: 2em 3em 2em 3em;  上下左右*/
+			/* padding: 2em 3em 2em;上下右，左和右相同 */
+			padding: 2em 3em; /*上右，下和上相同，左和右相同*/
+			width: 262px;
+			background: #fff;
 		}
 	</style>
 </head>
@@ -90,15 +131,36 @@
     <!-- 搜索条 -->
 	<div class="searchbar">
 		<div class="container">
-			<!-- logo -->
+			<!-- 1.logo -->
 			<img src="img/logo.png" alt="iWeb logo">
-			<!-- 输入框 -->
+			<!-- 3.我的购物车 -->
+			<div class="cart-container">
+				<!-- 购物车：z-index要高于下拉菜单 -->
+				<div class="cart" id="myCart">
+				   <span class="fa fa-shopping-cart fa-lg"></span>
+				   <span class=>我的购物车(<b>0</b>)</span>
+				   <span class="fa fa-caret-down caret" id=caret></span>
+				</div>
+				<!-- 下拉菜单 -->
+				<div class="dropdown">
+					请登陆后查看您的购物车
+				</div>
+			</div>	
+			<!-- 2.输入框 -->
 			<div class="search">
 			   <input type="text" placeholder="课程搜索"><span class="fa fa-search fa-lg"></span>
 			</div>
-			<!-- 我的购物车 -->
-			
 		</div>
 	</div>
+	<script>
+		// 悬停“我的购物车”则后面的小三角开始旋转，离开则转回来
+		myCart.onmouseenter =() =>{
+				 caret.classList.add('caret-rotate')
+		}
+		//鼠标离开时删除目标
+		myCart.onmouseleave =() =>{
+				 caret.classList.remove('caret-rotate')
+		}
+	</script>
 </body>
 </html>
